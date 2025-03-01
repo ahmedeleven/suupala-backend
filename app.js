@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import connectDB from "./db.js";
 import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 connectDB();
 
 app.use("/api/auth", authRoutes);
+app.use("/api", userRoutes);
 
 app.listen(port, () => {
   console.log(`App is listening on port ${port}`);
