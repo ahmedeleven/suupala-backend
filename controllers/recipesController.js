@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import User from "../models/user.js";
+import Recipe from "../models/recipe.js";
 
 /* Check if array items exist in another array
  * Used to check if items sent in the request exist in the use items list
@@ -36,6 +37,33 @@ export const generateRecipe = async (req, res) => {
     }`;
     const result = await model.generateContent(prompt);
     res.status(200).json({ result });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const addRecipe = async (req, res) => {
+  const { name, ingredients, instructions, difficulty, prepTime } = req.body;
+  const userId = req.user;
+  const newRecipe = new Recipe({
+    name,
+    ingredients,
+    instructions,
+    difficulty,
+    prepTime,
+    userId,
+  });
+
+  await newRecipe.save();
+
+  res.status(201).json(newRecipe);
+};
+
+export const getUserRecipes = async (req, res) => {
+  try {
+    const userId = req.user;
+    const recipes = await Recipe.find({ userId });
+    res.status(200).json(recipes);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }
