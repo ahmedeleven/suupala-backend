@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./db.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/userRoutes.js";
+import recipeRoutes from "./routes/recipeRoutes.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ connectDB();
 
 app.use("/api/auth", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", recipeRoutes);
 
 app.listen(port, () => {
   console.log(`App is listening on port ${port}`);
