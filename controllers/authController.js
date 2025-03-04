@@ -21,9 +21,11 @@ export const registerUser = async (req, res) => {
     // create a new user
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
-    res
-      .status(201)
-      .json({ message: `User registered successfully ${newUser}` });
+    // Generate token for the user
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+    res.status(201).json({ message: `User registered successfully!`, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -50,7 +52,9 @@ export const loginUser = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      res.status(401).json({ message: "Username of Password is not correct" });
+      return res
+        .status(401)
+        .json({ message: "Username of Password is not correct" });
     }
 
     // Generate token for the user
