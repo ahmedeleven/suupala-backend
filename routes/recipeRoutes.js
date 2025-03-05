@@ -8,7 +8,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/recipes/generate", authMiddleware, generateRecipe);
+router.post("/recipes/generate", authMiddleware, generateRecipe);
 router.post("/recipes", authMiddleware, addRecipe);
 router.get("/recipes/user", authMiddleware, getUserRecipes);
 

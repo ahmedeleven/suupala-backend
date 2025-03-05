@@ -27,7 +27,7 @@ export const generateRecipe = async (req, res) => {
     const genAi = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAi.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
     const prompt = `Generate a recipe using the items in the following array: ${items} \n
-    return the response as the following JSON format:\n
+    return the response as the following JSON format (return only the JSON object without formatting):\n
     {
         "name": "Recipe name",
         "ingredients": ["Required ingredients"],
