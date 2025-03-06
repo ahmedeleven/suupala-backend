@@ -68,3 +68,20 @@ export const getUserRecipes = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const getRecipeDetails = async (req, res) => {
+  try {
+    const userId = req.user;
+    const recipeId = req.params["id"];
+    const recipe = await Recipe.findOne({ _id: recipeId });
+
+    if (recipe.userId.toString() !== userId) {
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to see this recipe" });
+    }
+    res.status(200).json(recipe);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
