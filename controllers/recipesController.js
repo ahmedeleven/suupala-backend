@@ -85,3 +85,20 @@ export const getRecipeDetails = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const deleteRecipe = async (req, res) => {
+  try {
+    const userId = req.user;
+    const recipeId = req.params["id"];
+    const recipe = await Recipe.findOne({ _id: recipeId });
+    if (recipe.userId.toString() !== userId) {
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to delete this recipe" });
+    }
+    const removeRecipe = await Recipe.deleteOne({ _id: recipeId });
+    res.status(200).json({ message: "Recipe has been successfully deleted" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
