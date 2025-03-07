@@ -1,8 +1,8 @@
 ````
-# Project Name
+# Suupala
 
 ## Description
-This project is a web application that allows users to register, log in, and manage their items. It also includes functionality to generate recipes based on the items in the user's fridge.
+This project is a web application that allows users to register, log in, and manage their items. The main functionality of the project is to generate recipes using AI based on the items in the user's fridge.
 
 ## Features
 - User registration and login
