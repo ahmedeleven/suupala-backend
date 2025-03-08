@@ -1,15 +1,17 @@
-````
 # Suupala
 
 ## Description
+
 This project is a web application that allows users to register, log in, and manage their items. The main functionality of the project is to generate recipes using AI based on the items in the user's fridge.
 
 ## Features
+
 - User registration and login
 - Add and remove items from the user's list
 - Generate recipes using items in the user's list
 
 ## Technologies Used
+
 - Node.js
 - Express.js
 - MongoDB
@@ -20,7 +22,9 @@ This project is a web application that allows users to register, log in, and man
 - cors
 
 ## Installation
+
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/ahmedeleven/suupala-backend.git
    ```
@@ -74,24 +78,18 @@ This project is a web application that allows users to register, log in, and man
 ### authMiddleware.js
 
 - `authMiddleware`: Validates the JWT token and sets `req.user` to the authenticated user's ID.
-- `isCurrentUser`: Checks if the authenticated user matches the user ID in the request parameters.
 
 ### Example Usage in Routes
 
 ```javascript
 import express from "express";
-import { authMiddleware, isCurrentUser } from "../middleware/authMiddleware.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 import { addItem, removeItem } from "../controllers/usersController.js";
 
 const router = express.Router();
 
-router.post("/users/:userId/items", authMiddleware, isCurrentUser, addItem);
-router.delete(
-  "/users/:userId/items",
-  authMiddleware,
-  isCurrentUser,
-  removeItem
-);
+router.post("/users/:userId/items", authMiddleware, addItem);
+router.delete("/users/:userId/items", authMiddleware, removeItem);
 
 export default router;
 ```
@@ -99,8 +97,3 @@ export default router;
 ## License
 
 This project is licensed under the MIT License.
-
-```
-
-```
-````
