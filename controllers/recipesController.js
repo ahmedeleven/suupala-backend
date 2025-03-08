@@ -26,8 +26,8 @@ export const generateRecipe = async (req, res) => {
     }
     const genAi = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAi.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
-    const prompt = `Generate a recipe using the items in the following array: ${items} \n
-    return the response as the following JSON format:\n
+    const prompt = `Generate a recipe using all or some of the items in the following array: ${items} \n
+    return the response as the following JSON format (return only the JSON object without formatting):\n
     {
         "name": "Recipe name",
         "ingredients": ["Required ingredients"],
@@ -64,6 +64,40 @@ export const getUserRecipes = async (req, res) => {
     const userId = req.user;
     const recipes = await Recipe.find({ userId });
     res.status(200).json(recipes);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getRecipeDetails = async (req, res) => {
+  try {
+    const userId = req.user;
+    const recipeId = req.params["id"];
+    const recipe = await Recipe.findOne({ _id: recipeId });
+
+    if (recipe.userId.toString() !== userId) {
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to see this recipe" });
+    }
+    res.status(200).json(recipe);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const deleteRecipe = async (req, res) => {
+  try {
+    const userId = req.user;
+    const recipeId = req.params["id"];
+    const recipe = await Recipe.findOne({ _id: recipeId });
+    if (recipe.userId.toString() !== userId) {
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to delete this recipe" });
+    }
+    const removeRecipe = await Recipe.deleteOne({ _id: recipeId });
+    res.status(200).json({ message: "Recipe has been successfully deleted" });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }

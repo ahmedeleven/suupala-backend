@@ -5,6 +5,7 @@ import connectDB from "./db.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/userRoutes.js";
 import recipeRoutes from "./routes/recipeRoutes.js";
+import cors from "cors";
 
 const app = express();
 
@@ -17,6 +18,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Welcome to Suupala!\n");
 });
+
+app.use(cors());
 
 // Connect to the database
 connectDB();
